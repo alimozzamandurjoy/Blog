@@ -1,0 +1,1 @@
+This is a mini bolg application where user can post 
