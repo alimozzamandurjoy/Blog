@@ -3,14 +3,14 @@
 
 {% block content %}
 
-
+{% load crispy_forms_tags %}
 <h1>{{ post.title }}</h1>
 <p class="date">
     Published {{ post.publish }} by {{ post.author }}
 </p>
 {{ post.body|linebreaks }}
 <p>
-    <a href="{% url " blog:post_share" post.id %}">
+    <a href="{% url 'blog:post_share' post.id %}">
         Share this post
     </a>
 </p>
@@ -39,7 +39,7 @@
 {% else %}
     <h2>Add a new comment</h2>
     <form method="post">
-        {{ comment_form.as_p }}
+        {{ comment_form|crispy }}
         {% csrf_token %}
         <p><input type="submit" value="Add comment"></p>
     </form>

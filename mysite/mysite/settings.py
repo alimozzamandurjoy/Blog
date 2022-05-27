@@ -132,4 +132,4 @@ EMAIL_HOST_USER= 'alimozzamandurjoy2@gmail.com'
 EMAIL_HOST_PASSWORD= '******'
 EMAIL_PORT= 587
 EMAIL_USE_TLS= True
-# CRISPY_TEMPLATE_PACK = 'uni_form'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
