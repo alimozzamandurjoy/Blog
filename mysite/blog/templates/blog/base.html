@@ -13,7 +13,9 @@
     
 </head>
 <body>
-
+    <div class="card-header  shadow p-3 mb-5 bg-white rounded">
+        <a class="btn" href="{% url 'blog:post_list' %}"><h1>Home</h1></a>
+    </div>
 
     <div id="content">
         {% block content %}

@@ -1,15 +1,28 @@
-
 from django.shortcuts import get_object_or_404, render
 from .models import *
 from django.views.generic import ListView
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from .forms import EmailPostForm, CommentForm
 from django.core.mail import send_mail
+from taggit.models import Tag
+
 # Create your views here.
 
-def post_list(request):
-    posts = Post.objects.all()
-    return render(request,'blog/list.html',{'posts':posts})
+def post_list(request,tag_slug=None):
+    object_list= Post.objects.all()
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag,slug= tag_slug)
+        object_list= object_list.filter(tags__in=[tag])
+    paginator= Paginator(object_list,3)
+    page= request.GET.get('page')
+    try:
+        posts= paginator.page(page)
+    except PageNotAnInteger:
+        posts= paginator.page(1)
+    except EmptyPage:
+        posts= paginator.page(paginator.num_pages)
+    return render(request, 'blog/list.html',{'page':page,'posts':posts,'tag':tag})
 
 def post_detail(request,year,month,day,post):
     post= get_object_or_404(Post,slug=post,status='published',publish__year= year,publish__month= month, publish__day= day)
@@ -28,17 +41,7 @@ def post_detail(request,year,month,day,post):
 
     return render(request,'blog/detail.html',{'post':post, 'comments':comments, 'new_comment': new_comment, 'comment_form': comment_form})
 
-def post_list(request):
-    object_list= Post.objects.all()
-    paginator= Paginator(object_list,3)
-    page= request.GET.get('page')
-    try:
-        posts= paginator.page(page)
-    except PageNotAnInteger:
-        posts= paginator.page(1)
-    except EmptyPage:
-        posts= paginator.page(paginator.num_pages)
-    return render(request, 'blog/list.html',{'page':page,'posts':posts})
+
 
 def post_share(request,post_id):
    post = get_object_or_404(Post, id= post_id, status= 'published')
