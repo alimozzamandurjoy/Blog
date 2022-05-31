@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render
+
 from .models import *
 from django.views.generic import ListView
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
@@ -10,10 +11,17 @@ from taggit.models import Tag
 
 def post_list(request,tag_slug=None):
     object_list= Post.objects.all()
+
+    object= request.GET.get('search')
+    if object != '' and object is not None:
+        object_list= object_list.filter(title__icontains= object)
+    
     tag = None
     if tag_slug:
         tag = get_object_or_404(Tag,slug= tag_slug)
         object_list= object_list.filter(tags__in=[tag])
+   
+   
     paginator= Paginator(object_list,3)
     page= request.GET.get('page')
     try:
@@ -46,6 +54,10 @@ def post_detail(request,year,month,day,post):
 def post_share(request,post_id):
    post = get_object_or_404(Post, id= post_id, status= 'published')
    sent= False
+
+   
+
+
 
    if request.method== 'POST':
        form = EmailPostForm(request.POST)

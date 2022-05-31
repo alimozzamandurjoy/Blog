@@ -13,9 +13,17 @@
     
 </head>
 <body>
-    <div class="card-header  shadow p-3 mb-5 bg-white rounded">
-        <a class="btn" href="{% url 'blog:post_list' %}"><h1>Home</h1></a>
+
+    <div class="card m-3">
+        <nav class="navbar navbar-light bg-light justify-content-between">
+            <a class="navbar-brand" href="{% url 'blog:post_list' %}">Navbar</a>
+            <form class="form-inline">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Search</button>
+            </form>
+        </nav>
     </div>
+   
 
     <div id="content">
         {% block content %}
