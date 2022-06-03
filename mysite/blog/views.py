@@ -1,14 +1,25 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from datetime import datetime
 from .models import *
 from django.views.generic import ListView
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
-from .forms import EmailPostForm, CommentForm
+from .forms import *
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
 
 # Create your views here.
+
+def add_post(request):
+    if request.method == 'POST':
+        form = Addpost(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blog:post_list')
+    else:
+        form = Addpost()
+        
+    return render (request,'blog/add_post.html',{'form':form})
 
 def post_list(request,tag_slug=None):
     object_list= Post.objects.all()

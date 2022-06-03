@@ -17,6 +17,7 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy= 'publish'
     ordering= ('status','publish')
     search_fields= ('title',)
+    
 
 
 @admin.register(Comment)
